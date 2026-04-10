@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>BURGER LAND 2026 · Votación Segura · San Juan del Cesar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   TOKENS & RESET
+══════════════════════════════════════════ */
+:root {
+  --black:   #0A0500;
+  --deep:    #110800;
+  --brown:   #1E0D00;
+  --ember:   #FF4500;
+  --ember2:  #FF6B35;
+  --gold:    #D4920A;
+  --gold2:   #F0B429;
+  --gold3:   #FED766;
+  --cream:   #FAF3E0;
+  --smoke:   rgba(250,243,224,0.55);
+  --glass:   rgba(255,255,255,0.04);
+  --border:  rgba(212,146,10,0.22);
+  --r:       20px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);
+  color:var(--cream);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+img{display:block;max-width:100%;border:none}
+button{cursor:pointer;font-family:inherit;border:none;background:none;outline:none}
+input,textarea,select{font-family:inherit;outline:none}
+a{text-decoration:none;color:inherit}
+
+/* ══════════════════════════════════════════
+   LOADER / SPLASH
+══════════════════════════════════════════ */
+#splash{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--black);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;overflow:hidden;
+}
+#splash.out{animation:splashOut .9s cubic-bezier(.77,0,.18,1) forwards}
+@keyframes splashOut{
+  0%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.06);pointer-events:none}
+}
+
+.splash-fire{
+  font-size:4.5rem;
+  animation:fireFloat 2.4s ease-in-out infinite;
+  filter:drop-shadow(0 0 40px #FF4500cc);
+  margin-bottom:.6rem;
+}
+@keyframes fireFloat{
+  0%,100%{transform:translateY(0) scale(1) rotate(-3deg)}
+  50%{transform:translateY(-16px) scale(1.05) rotate(3deg)}
+}
+
+.splash-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,22vw,11rem);
+  line-height:.88;
+  letter-spacing:.04em;
+  background:linear-gradient(160deg,#fff 0%,var(--gold3) 40%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:titleIn 1.1s cubic-bezier(.22,1,.36,1) both .2s;
+}
+.splash-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(.9rem,3.5vw,1.4rem);
+  font-style:italic;
+  color:var(--gold2);
+  letter-spacing:.28em;
+  margin:.6rem 0 .4rem;
+  animation:titleIn 1.1s cubic-bezier(.22,1,.36,1) both .35s;
+}
+.splash-place{
+  font-size:.72rem;
+  letter-spacing:.35em;
+  text-transform:uppercase;
+  color:rgba(250,243,224,.45);
+  animation:titleIn 1.1s cubic-bezier(.22,1,.36,1) both .5s;
+}
+.splash-line{
+  width:160px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:1.8rem auto 2rem;
+  animation:titleIn 1.1s cubic-bezier(.22,1,.36,1) both .55s;
+}
+@keyframes titleIn{
+  from{opacity:0;transform:translateY(50px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.splash-btn{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.25rem;
+  letter-spacing:.25em;
+  padding:.95rem 3.2rem;
+  border-radius:60px;
+  background:linear-gradient(135deg,var(--ember),var(--ember2));
+  color:#fff;
+  box-shadow:0 0 50px rgba(255,69,0,.55),0 0 120px rgba(255,69,0,.18);
+  position:relative;overflow:hidden;
+  transition:transform .3s,box-shadow .3s;
+  animation:titleIn 1.1s cubic-bezier(.22,1,.36,1) both .7s;
+}
+.splash-btn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 0 70px rgba(255,69,0,.75)}
+
+/* ══════════════════════════════════════════
+   MAIN
+══════════════════════════════════════════ */
+#app{display:none;min-height:100vh}
+#app.show{display:block}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 1.2rem;
+  background:linear-gradient(180deg,rgba(10,5,0,.94) 0%,transparent 100%);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(212,146,10,.14);
+  flex-wrap:wrap;
+}
+.nav-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;letter-spacing:.08em;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.nav-btn{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.85rem;letter-spacing:.18em;
+  padding:.45rem 1rem;
+  border-radius:30px;
+  background:rgba(212,146,10,.15);
+  border:1px solid var(--border);
+  color:var(--gold2);
+  transition:all .3s;
+}
+.nav-btn:hover{background:var(--gold);color:var(--black)}
+.nav-btn.vote-btn{
+  background:linear-gradient(135deg,var(--ember),var(--ember2));
+  color:#fff;border-color:transparent;
+  box-shadow:0 0 20px rgba(255,69,0,.35);
+}
+.nav-btn.admin-btn{
+  background:rgba(39,174,96,.15);
+  border-color:rgba(39,174,96,.25);
+  color:#2ecc71;
+}
+.nav-btn.admin-btn:hover{background:#27ae60;color:#fff}
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+#hero{
+  min-height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  position:relative;overflow:hidden;
+  padding:6rem 1.5rem 4rem;
+  background:radial-gradient(ellipse 80% 60% at 50% 20%,rgba(255,69,0,.28) 0%,transparent 70%),
+             radial-gradient(ellipse 60% 40% at 80% 80%,rgba(212,146,10,.16) 0%,transparent 65%),
+             var(--black);
+}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.65rem;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--gold2);
+  border:1px solid rgba(212,146,10,.4);
+  padding:.4rem 1.3rem;border-radius:40px;
+  margin-bottom:1.4rem;
+  background:rgba(212,146,10,.07);
+  animation:fadeUp 1s both .2s;
+}
+
+.hero-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,20vw,13rem);
+  line-height:.84;
+  letter-spacing:.04em;
+  animation:fadeUp 1s both .35s;
+}
+.hero-title .t1{
+  display:block;
+  background:linear-gradient(160deg,#fff 0%,var(--gold3) 55%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-title .t2{
+  display:block;
+  background:linear-gradient(160deg,var(--ember2) 0%,var(--ember) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(255,69,0,.5));
+}
+
+.hero-serif{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1rem,3.5vw,1.5rem);
+  font-style:italic;
+  color:rgba(250,243,224,.72);
+  max-width:520px;margin:.9rem auto 0;
+  line-height:1.7;
+  animation:fadeUp 1s both .5s;
+}
+
+.hero-tags{
+  display:flex;flex-wrap:wrap;gap:.55rem;
+  justify-content:center;
+  margin:1.5rem auto .5rem;
+  animation:fadeUp 1s both .62s;
+}
+.hero-tag{
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;
+  padding:.35rem .9rem;border-radius:30px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  color:rgba(250,243,224,.55);
+}
+
+.hero-cta{
+  display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;
+  margin-top:1.6rem;
+  animation:fadeUp 1s both .75s;
+}
+.btn-fire{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.22em;
+  padding:.85rem 2.2rem;border-radius:10px;
+  background:linear-gradient(135deg,var(--ember),var(--ember2));
+  color:#fff;
+  box-shadow:0 0 35px rgba(255,69,0,.45);
+  transition:all .3s;
+}
+.btn-fire:hover{transform:translateY(-3px);box-shadow:0 10px 45px rgba(255,69,0,.65)}
+
+.btn-outline{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.1rem;letter-spacing:.22em;
+  padding:.85rem 2.2rem;border-radius:10px;
+  background:transparent;
+  color:var(--gold2);
+  border:1.5px solid var(--gold);
+  transition:all .3s;
+}
+.btn-outline:hover{background:var(--gold);color:var(--black);transform:translateY(-3px)}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(36px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.scroll-hint{
+  position:absolute;bottom:1.6rem;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:.45rem;
+  font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;
+  color:rgba(250,243,224,.28);
+  animation:bobDown 2.2s ease-in-out infinite;
+}
+.scroll-hint span{width:1px;height:32px;background:linear-gradient(to bottom,var(--gold),transparent)}
+@keyframes bobDown{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+
+/* ══════════════════════════════════════════
+   SECTION SHARED
+══════════════════════════════════════════ */
+.sec{padding:5rem 1.4rem;position:relative}
+.sec-label{font-size:.62rem;letter-spacing:.42em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.sec-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.6rem,8vw,5.5rem);
+  line-height:1;
+  background:linear-gradient(135deg,#fff,var(--gold3));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.sec-rule{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,var(--ember),var(--gold));
+  border-radius:2px;
+  margin:.9rem 0 2.4rem;
+}
+
+/* ══════════════════════════════════════════
+   ABOUT
+══════════════════════════════════════════ */
+#about{
+  background:radial-gradient(ellipse 70% 50% at 10% 50%,rgba(255,69,0,.1) 0%,transparent 70%),var(--black);
+}
+.about-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:3rem;align-items:center;
+}
+@media(max-width:680px){.about-inner{grid-template-columns:1fr}}
+.about-visual{text-align:center}
+.about-trophy{
+  font-size:7rem;
+  animation:trophyFloat 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 35px rgba(212,146,10,.7));
+}
+@keyframes trophyFloat{
+  0%,100%{transform:translateY(0) rotate(-4deg)}
+  50%{transform:translateY(-18px) rotate(4deg)}
+}
+.about-text p{
+  color:rgba(250,243,224,.68);line-height:1.9;
+  margin-bottom:.9rem;font-size:1rem;
+}
+.about-text strong{color:var(--gold3)}
+.about-chips{
+  display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.4rem;
+}
+.chip{
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  padding:.35rem .85rem;border-radius:30px;
+  background:rgba(255,69,0,.1);
+  border:1px solid rgba(255,69,0,.25);
+  color:var(--ember2);
+}
+
+/* ══════════════════════════════════════════
+   PARTICIPANTES
+══════════════════════════════════════════ */
+#participantes{
+  background:linear-gradient(180deg,rgba(30,13,0,.4) 0%,var(--black) 100%);
+}
+.part-header{text-align:center;margin-bottom:2.5rem}
+.part-header .sec-rule{margin:1rem auto 0}
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:1.5rem;
+  max-width:1180px;margin:0 auto;
+}
+
+.pcard{
+  background:linear-gradient(145deg,rgba(40,20,0,.7),rgba(15,8,0,.85));
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  position:relative;
+  transition:transform .4s,box-shadow .4s,border-color .4s;
+}
+.pcard:hover{
+  transform:translateY(-10px);
+  border-color:var(--gold2);
+  box-shadow:0 24px 64px rgba(212,146,10,.28);
+}
+
+.pcard-img-wrap{position:relative;height:210px;overflow:hidden}
+.pcard-img-wrap img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .7s;
+}
+.pcard:hover .pcard-img-wrap img{transform:scale(1.1)}
+.pcard-img-fade{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(10,5,0,.85) 0%,rgba(10,5,0,.1) 55%,transparent 100%);
+}
+.pcard-num{
+  position:absolute;top:.9rem;left:.9rem;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:.8rem;padding:.2rem .65rem;border-radius:4px;
+  background:var(--gold);color:var(--black);
+  z-index:2;
+}
+
+.pcard-body{padding:1.3rem 1.4rem 1.4rem}
+.pcard-rest{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:600;
+  color:var(--gold2);margin-bottom:.15rem;
+}
+.pcard-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.55rem;letter-spacing:.04em;
+  color:#fff;margin-bottom:.7rem;
+}
+.pcard-ings{
+  display:flex;flex-wrap:wrap;gap:.3rem;
+  margin-bottom:1rem;min-height:52px;
+}
+.pcard-ing{
+  font-size:.68rem;padding:.22rem .65rem;border-radius:16px;
+  background:rgba(212,146,10,.1);
+  border:1px solid rgba(212,146,10,.25);
+  color:var(--gold3);
+}
+.pcard-stars{
+  display:flex;align-items:center;gap:.25rem;
+  margin-bottom:1rem;
+}
+.pcs{color:var(--gold);font-size:.95rem}
+.pcs.off{color:rgba(212,146,10,.22)}
+.pcard-avg{font-size:.75rem;color:rgba(250,243,224,.5);margin-left:.25rem}
+
+.btn-vote{
+  width:100%;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.05rem;letter-spacing:.22em;
+  padding:.8rem;border-radius:10px;
+  background:linear-gradient(135deg,var(--ember),var(--ember2));
+  color:#fff;
+  box-shadow:0 4px 20px rgba(255,69,0,.3);
+  transition:all .3s;
+}
+.btn-vote:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,69,0,.55)}
+
+/* ══════════════════════════════════════════
+   RANKING
+══════════════════════════════════════════ */
+#ranking{
+  background:linear-gradient(180deg,var(--black) 0%,rgba(20,10,0,.6) 100%);
+}
+.rank-inner{max-width:700px;margin:0 auto}
+.rank-row{
+  display:flex;align-items:center;gap:1rem;
+  padding:1.1rem 1.3rem;
+  border:1px solid var(--border);border-radius:14px;
+  margin-bottom:.75rem;
+  background:rgba(255,255,255,.025);
+  transition:all .35s;
+}
+.rank-row:hover{border-color:var(--gold2);background:rgba(212,146,10,.06);transform:translateX(4px)}
+.rank-pos{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem;color:var(--gold);
+  min-width:2rem;text-align:center;
+}
+.rank-pos.gold-medal{color:#FFD700;text-shadow:0 0 16px rgba(255,215,0,.7)}
+.rank-pos.silver-medal{color:#C0C0C0}
+.rank-pos.bronze-medal{color:#CD7F32}
+.rank-info{flex:1}
+.rank-rest{font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.1rem}
+.rank-burger{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:#fff}
+.rank-stars-row{display:flex;align-items:center;gap:.25rem;margin-top:.2rem}
+.rstar{font-size:.8rem;color:var(--gold)}
+.rstar.off{color:rgba(212,146,10,.2)}
+.rank-score{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;color:var(--gold3);
+  min-width:3rem;text-align:right;
+}
+.rank-votes{font-size:.68rem;color:rgba(250,243,224,.4);text-align:right}
+
+/* ══════════════════════════════════════════
+   ADMIN PANEL
+══════════════════════════════════════════ */
+#admin-section{
+  background:linear-gradient(180deg,var(--black) 0%,rgba(20,10,0,.6) 100%);
+  padding:2rem 1.4rem;
+}
+#admin-panel{
+  background:linear-gradient(145deg,rgba(40,20,0,.7),rgba(15,8,0,.85));
+  border:1px solid rgba(39,174,96,.3);
+  border-radius:22px;
+  padding:2rem;
+  max-width:900px;margin:0 auto;
+}
+.admin-header{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:1.5rem;
+  flex-wrap:wrap;
+}
+.admin-header h2{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;color:#2ecc71;
+}
+.admin-badge{
+  background:#27ae60;color:white;
+  padding:.2rem 1rem;border-radius:20px;
+  font-size:.7rem;letter-spacing:.2em;
+}
+.code-generator-area{
+  background:rgba(0,0,0,.3);
+  border-radius:15px;padding:1.5rem;
+  margin:1.5rem 0;
+}
+.secure-code-list{
+  display:flex;flex-wrap:wrap;gap:.5rem;
+  margin:1rem 0;
+}
+.secure-code-item{
+  background:#1E0D00;padding:.5rem 1rem;
+  border-radius:8px;border:1px solid var(--gold);
+  font-family:monospace;font-size:1rem;
+}
+.input-field{
+  width:100%;padding:.75rem;border-radius:8px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:var(--cream);margin:.5rem 0;
+}
+.input-field:focus{border-color:var(--gold)}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1rem;margin-top:1rem;
+}
+.stat-card{
+  background:rgba(0,0,0,.3);padding:1rem;
+  border-radius:12px;text-align:center;
+}
+.stat-number{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.5rem;color:var(--gold3);
+}
+.stat-label{
+  font-size:.7rem;letter-spacing:.15em;
+  color:rgba(250,243,224,.5);
+}
+
+/* ══════════════════════════════════════════
+   MODALS
+══════════════════════════════════════════ */
+.overlay{
+  position:fixed;inset:0;z-index:2000;
+  background:rgba(5,2,0,.88);
+  backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .4s;
+}
+.overlay.open{opacity:1;pointer-events:all}
+
+.mbox{
+  background:linear-gradient(145deg,rgba(50,25,0,.97),rgba(15,8,0,.99));
+  border:1px solid rgba(212,146,10,.38);
+  border-radius:22px;
+  padding:2rem 1.8rem;
+  width:100%;max-width:500px;
+  max-height:90vh;overflow-y:auto;
+  position:relative;
+  box-shadow:0 40px 100px rgba(0,0,0,.8);
+}
+.m-close{
+  position:absolute;top:.9rem;right:1.1rem;
+  font-size:1.3rem;color:rgba(250,243,224,.4);
+  cursor:pointer;
+}
+.m-close:hover{color:var(--gold)}
+
+.m-rest{font-size:.65rem;letter-spacing:.35em;color:var(--gold);margin-bottom:.15rem}
+.m-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.75rem;color:#fff;margin-bottom:1.4rem;
+}
+
+.mfield{margin-bottom:1.1rem}
+.mlabel{
+  display:block;font-size:.65rem;letter-spacing:.25em;
+  color:var(--gold);margin-bottom:.4rem;
+}
+.minput,.mtextarea{
+  width:100%;padding:.75rem 1rem;border-radius:10px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--border);
+  color:var(--cream);
+}
+.mtextarea{height:88px;resize:none}
+
+.star-row{display:flex;gap:.5rem;margin:1rem 0}
+.sbtn{
+  font-size:2.2rem;background:none;border:none;
+  color:rgba(212,146,10,.2);
+  transition:all .2s;cursor:pointer;
+}
+.sbtn.on{color:var(--gold)}
+.sbtn:hover{transform:scale(1.25)}
+
+.btn-send{
+  width:100%;padding:1rem;border-radius:12px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;letter-spacing:.25em;
+  background:linear-gradient(135deg,var(--gold),var(--gold3));
+  color:var(--black);
+  margin-top:1rem;
+  cursor:pointer;
+}
+.btn-send:hover{transform:translateY(-2px)}
+
+.attempt-counter{
+  color:#e74c3c;font-weight:bold;
+  font-size:1.2rem;
+}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{
+  background:rgba(0,0,0,.6);
+  border-top:1px solid rgba(212,146,10,.12);
+  text-align:center;
+  padding:3.5rem 2rem;
+}
+.foot-logo{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2.8rem;letter-spacing:.1em;
+  background:linear-gradient(135deg,var(--gold3),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:1rem;
+}
+.foot-place{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:1rem;
+  color:var(--gold2);letter-spacing:.2em;
+  margin-bottom:1.6rem;
+}
+.foot-credits{
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(250,243,224,.32);line-height:2.2;
+}
+.foot-credits strong{
+  color:var(--gold2);
+  font-size:.85rem;
+}
+.foot-rule{
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:1.2rem auto;
+}
+.creator-names{
+  display:flex;justify-content:center;gap:2rem;
+  margin:1rem 0;
+}
+.creator{
+  text-align:center;
+}
+.creator-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;letter-spacing:.15em;
+  color:var(--gold2);
+}
+.creator-role{
+  font-size:.6rem;letter-spacing:.2em;
+  color:rgba(250,243,224,.4);
+}
+
+/* ══════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:1.8rem;left:50%;
+  transform:translateX(-50%) translateY(110px);
+  background:rgba(30,15,0,.97);
+  border:1px solid var(--gold);border-radius:12px;
+  padding:.75rem 1.8rem;
+  font-size:.88rem;color:var(--gold2);
+  z-index:9000;
+  transition:transform .42s;
+  box-shadow:0 8px 30px rgba(0,0,0,.5);
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* Mobile */
+@media(max-width:480px){
+  .cards-grid{grid-template-columns:1fr}
+  #nav{justify-content:center}
+  .nav-actions{justify-content:center}
+  .stats-grid{grid-template-columns:1fr}
+  .creator-names{flex-direction:column;gap:.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════
+     SPLASH SCREEN
+═══════════════════════════════════════ -->
+<div id="splash">
+  <div style="position:relative;z-index:2">
+    <div class="splash-fire">🔥</div>
+    <h1 class="splash-title">BURGER<br>LAND</h1>
+    <p class="splash-sub">La Gran Competencia</p>
+    <p class="splash-place">San Juan del Cesar · La Guajira · Colombia · 2026</p>
+    <div class="splash-line"></div>
+    <button class="splash-btn" onclick="enterSite()">✦ ENTRAR AL EVENTO ✦</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     APP
+═══════════════════════════════════════ -->
+<div id="app">
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-logo">🔥 Burger Land 2026</div>
+    <div class="nav-actions">
+      <button class="nav-btn" onclick="scrollToSection('about')">📋 Evento</button>
+      <button class="nav-btn" onclick="scrollToSection('participantes')">🍔 Participantes</button>
+      <button class="nav-btn" onclick="scrollToSection('ranking')">🏆 Ranking</button>
+      <button class="nav-btn vote-btn" onclick="openVoteModal(null)">🗳 Votar</button>
+      <button class="nav-btn admin-btn" onclick="openAdminPanel()">🔐 Admin</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div style="position:relative;z-index:2">
+      <div class="hero-badge">✦ Competencia Gastronómica 2026 ✦</div>
+      <h1 class="hero-title">
+        <span class="t1">BURGER</span>
+        <span class="t2">LAND</span>
+      </h1>
+      <p class="hero-serif">Los mejores restaurantes del pueblo compiten por el título de <strong>La Mejor Hamburguesa</strong>. Tú tienes la palabra.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">9 Participantes</span>
+        <span class="hero-tag">Voto Único</span>
+        <span class="hero-tag">Código Seguro</span>
+        <span class="hero-tag">2026</span>
+      </div>
+      <div class="hero-cta">
+        <button class="btn-fire" onclick="scrollToSection('participantes')">🍔 Ver Participantes</button>
+        <button class="btn-outline" onclick="openVoteModal(null)">🗳 Emitir mi Voto</button>
+      </div>
+    </div>
+    <div class="scroll-hint">Explorar<span></span></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="sec">
+    <div class="about-inner">
+      <div class="about-visual">
+        <div class="about-trophy">🏆</div>
+      </div>
+      <div class="about-text">
+        <p class="sec-label">El Evento 2026</p>
+        <h2 class="sec-title">Una Batalla<br>Épica</h2>
+        <div class="sec-rule"></div>
+        <p>Bienvenidos a <strong>Burger Land 2026</strong>, la experiencia gastronómica más emocionante de <strong>San Juan del Cesar</strong>. Los mejores restaurantes de la región se enfrentan por un único objetivo: conquistar tu paladar.</p>
+        <p>Cada participante ha traído su <strong>hamburguesa estrella</strong> — su creación más especial — para ser juzgada por el único juez que importa: <strong>la comunidad</strong>.</p>
+        <p>Tu voto es tu voz. Tu calificación es la verdad. Prueba, opina y decide quién se lleva la corona de <strong>La Mejor Burger del Pueblo 👑</strong></p>
+        <div class="about-chips">
+          <span class="chip">🔥 9 Restaurantes</span>
+          <span class="chip">🔐 Código Único Seguro</span>
+          <span class="chip">⭐ Calificación 1–5</span>
+          <span class="chip">📊 Resultados en vivo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTICIPANTES -->
+  <section id="participantes" class="sec">
+    <div class="part-header">
+      <p class="sec-label">En Competencia 2026</p>
+      <h2 class="sec-title">Los Participantes</h2>
+      <div class="sec-rule"></div>
+      <p>Toca <strong style="color:var(--gold3)">VOTAR</strong> en la tarjeta del restaurante que quieras calificar</p>
+    </div>
+    <div class="cards-grid" id="cards-grid"></div>
+  </section>
+
+  <!-- RANKING -->
+  <section id="ranking" class="sec">
+    <div style="text-align:center;margin-bottom:2.4rem">
+      <p class="sec-label">Marcador en Vivo 2026</p>
+      <h2 class="sec-title">Ranking Actual</h2>
+      <div class="sec-rule" style="margin:1rem auto 0"></div>
+    </div>
+    <div class="rank-inner" id="rank-list"></div>
+  </section>
+
+  <!-- ADMIN PANEL -->
+  <section id="admin-section" style="display:none;">
+    <div id="admin-panel">
+      <div class="admin-header">
+        <h2>🔐 Panel de Administración</h2>
+        <span class="admin-badge">ACCESO SEGURO</span>
+        <button class="m-close" style="position:static;margin-left:auto;" onclick="closeAdminPanel()">✕ Cerrar</button>
+      </div>
+      
+      <p style="color:rgba(250,243,224,.7);margin-bottom:1.5rem;">
+        Genera códigos seguros para distribuir en tickets físicos. Cada código es único y de un solo uso.
+      </p>
+      
+      <div class="code-generator-area">
+        <h3 style="color:var(--gold);margin-bottom:1rem;">🎫 Generar Códigos Seguros</h3>
+        
+        <label class="mlabel">Restaurante:</label>
+        <select class="input-field" id="admin-restaurant">
+          <option value="1">Pekados - La Hamburguesa Pekadora</option>
+          <option value="2">Yogui - La Yogui Signature</option>
+          <option value="3">Burger Bros - La Bro's Clásica</option>
+          <option value="4">El Rincón de la Parrilla - La Parrillera Suprema</option>
+          <option value="5">Johan Burger - La Johan Special</option>
+          <option value="6">Jack's - La Jack's Original</option>
+          <option value="7">Charry's - La Charry's Explosiva</option>
+          <option value="8">Rick Daniels - La Rick's Gourmet</option>
+          <option value="9">Bendito Chuzo - La Bendita de Oro</option>
+        </select>
+        
+        <label class="mlabel">Cantidad de códigos:</label>
+        <input type="number" class="input-field" id="admin-quantity" value="5" min="1" max="50">
+        
+        <button class="btn-fire" onclick="generateSecureCodes()" style="width:100%;margin:1rem 0;">🎫 GENERAR CÓDIGOS</button>
+        
+        <div id="generated-codes-display" style="margin:1rem 0;"></div>
+        
+        <button class="btn-outline" onclick="exportCodesToCSV()" style="width:100%;">📥 Exportar a CSV (Excel)</button>
+        <button class="btn-outline" onclick="exportVotesToCSV()" style="width:100%;margin-top:.5rem;">📊 Exportar Votos (CSV)</button>
+      </div>
+      
+      <div style="margin-top:1.5rem;">
+        <h3 style="color:var(--gold);margin-bottom:1rem;">📊 Estadísticas</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-number" id="total-votes-admin">0</div>
+            <div class="stat-label">Total Votos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="total-codes-admin">0</div>
+            <div class="stat-label">Códigos Generados</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="used-codes-admin">0</div>
+            <div class="stat-label">Códigos Usados</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="foot-logo">🔥 Burger Land 2026</div>
+    <p class="foot-place">San Juan del Cesar · La Guajira · Colombia</p>
+    <div class="foot-rule"></div>
+    
+    <!-- CRÉDITOS DE LOS CREADORES -->
+    <div class="creator-names">
+      <div class="creator">
+        <div class="creator-name">MILKYS ALVAREZ</div>
+        <div class="creator-role">Diseño & Desarrollo</div>
+      </div>
+      <div class="creator">
+        <div class="creator-name">LUIS GAMEZ</div>
+        <div class="creator-role">Diseño & Desarrollo</div>
+      </div>
+    </div>
+    
+    <p class="foot-credits">
+      Una Experiencia Gastronómica Sin Igual<br>
+      Diseñado y Desarrollado por<br>
+      <strong>Milkys Alvarez</strong> & <strong>Luis Gamez</strong><br>
+      © 2026 Burger Land — Todos los derechos reservados
+    </p>
+  </footer>
+
+</div><!-- /app -->
+
+<!-- ═══════════════════════════════════════
+     VOTE MODAL
+═══════════════════════════════════════ -->
+<div class="overlay" id="vote-modal">
+  <div class="mbox">
+    <button class="m-close" onclick="closeModal('vote-modal')">✕</button>
+    <p class="m-rest" id="m-rest">Restaurante</p>
+    <h3 class="m-name" id="m-name">Hamburguesa</h3>
+
+    <div id="attempt-info" style="margin-bottom:1rem;text-align:center;">
+      <span style="color:rgba(250,243,224,.5);">Intentos restantes:</span>
+      <span class="attempt-counter" id="attempts-left">3</span>
+    </div>
+
+    <div class="mfield">
+      <label class="mlabel">Tu Nombre *</label>
+      <input class="minput" id="v-name" type="text" placeholder="Ej: María González" autocomplete="off">
+    </div>
+
+    <div class="mfield">
+      <label class="mlabel">Código de Votación (12 caracteres) *</label>
+      <input class="minput" id="v-code" type="text" placeholder="BL-XXXX-XXXX" maxlength="14" style="text-transform:uppercase" autocomplete="off">
+      <p style="font-size:.68rem;color:rgba(250,243,224,.36);margin-top:.35rem;">⚠️ Código único de tu ticket. Solo puede usarse UNA vez.</p>
+      <div id="code-status" style="font-size:.75rem;margin-top:.3rem;"></div>
+    </div>
+
+    <div class="mfield">
+      <label class="mlabel">Comentario (opcional)</label>
+      <textarea class="mtextarea" id="v-comment" placeholder="¿Cómo estuvo? Cuéntanos..."></textarea>
+    </div>
+
+    <div class="mfield">
+      <label class="mlabel">Tu Calificación *</label>
+      <div class="star-row" id="star-row">
+        <button class="sbtn" data-v="1" onclick="setRating(1)">★</button>
+        <button class="sbtn" data-v="2" onclick="setRating(2)">★</button>
+        <button class="sbtn" data-v="3" onclick="setRating(3)">★</button>
+        <button class="sbtn" data-v="4" onclick="setRating(4)">★</button>
+        <button class="sbtn" data-v="5" onclick="setRating(5)">★</button>
+      </div>
+      <p id="rating-label" style="font-size:.75rem;color:rgba(250,243,224,.45);">Selecciona de 1 a 5 estrellas</p>
+    </div>
+
+    <button class="btn-send" onclick="submitSecureVote()" id="submit-vote-btn">✦ ENVIAR VOTO ✦</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="overlay" id="success-overlay">
+  <div class="mbox" style="text-align:center;">
+    <span style="font-size:5rem;display:block;margin-bottom:1rem;">🏆</span>
+    <h2 style="font-family:'Bebas Neue';font-size:2.5rem;color:var(--gold3);">¡Voto Registrado!</h2>
+    <p style="color:rgba(250,243,224,.8);margin:1rem 0;" id="success-message"></p>
+    <button class="btn-outline" onclick="closeModal('success-overlay')" style="width:100%;">Continuar</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   BURGER LAND 2026 - SISTEMA DE VOTACIÓN SEGURA
+   Creado por: Milkys Alvarez & Luis Gamez
+   San Juan del Cesar · La Guajira · Colombia
+═══════════════════════════════════════════════════════════════ */
+
+// Configuración
+const CONFIG = {
+  ADMIN_PASSWORD: 'admin2026',
+  MAX_ATTEMPTS: 3,
+  BLOCK_DURATION: 300000
+};
+
+// Datos de restaurantes con IMÁGENES CORRECTAS DE HAMBURGUESAS
+const RESTAURANTS = {
+  1: { name: 'Pekados', burger: 'La Hamburguesa Pekadora', 
+       ingredients: ['Carne de res','Queso cheddar','Tocino','Cebolla caramelizada','Salsa especial'],
+       img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=85' },
+  2: { name: 'Yogui', burger: 'La Yogui Signature',
+       ingredients: ['Doble carne angus','Queso americano','Lechuga','Tomate','Alioli'],
+       img: 'https://images.unsplash.com/photo-1550317138-10000687a72b?w=600&q=85' },
+  3: { name: 'Burger Bros', burger: "La Bro's Clásica",
+       ingredients: ['Smash burger doble','Queso suizo','Pepinillos','Mostaza Dijon','Cebolla frita'],
+       img: 'https://images.unsplash.com/photo-1586816001966-79b736744398?w=600&q=85' },
+  4: { name: 'El Rincón de la Parrilla', burger: 'La Parrillera Suprema',
+       ingredients: ['Carne madurada','Chimichurri','Queso manchego','Aguacate','Jalapeños'],
+       img: 'https://images.unsplash.com/photo-1615297928064-24977384d0da?w=600&q=85' },
+  5: { name: 'Johan Burger', burger: 'La Johan Special',
+       ingredients: ['Carne angus 200g','Queso pepper jack','Aros de cebolla','Salsa habanero'],
+       img: 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=600&q=85' },
+  6: { name: "Jack's", burger: "La Jack's Original",
+       ingredients: ['Carne criolla','Queso costeño','Hogao','Piña asada','Cilantro'],
+       img: 'https://images.unsplash.com/photo-1609167830220-7164aa360951?w=600&q=85' },
+  7: { name: "Charry's", burger: "La Charry's Explosiva",
+       ingredients: ['Doble smash patty','Queso americano triple','Salsa de trufa','Rúgula'],
+       img: 'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=85' },
+  8: { name: 'Rick Daniels', burger: "La Rick's Gourmet",
+       ingredients: ['Carne Black Angus','Queso brie','Tocino maple','Cebolla encurtida'],
+       img: 'https://images.unsplash.com/photo-1596662950747-8b9e0a4b8e5c?w=600&q=85' },  // HAMBURGUESA GOURMET
+  9: { name: 'Bendito Chuzo', burger: 'La Bendita de Oro',
+       ingredients: ['Carne res y cerdo','Queso gouda','Guacamole','Pico de gallo'],
+       img: 'https://images.unsplash.com/photo-1571091718768-2d7c21d2c6f7?w=600&q=85' }  // HAMBURGUESA CON AGUACATE
+};
+
+// Estado del sistema
+let secureCodes = new Map();
+let votes = [];
+let currentRating = 0;
+let currentTarget = null;
+let attempts = CONFIG.MAX_ATTEMPTS;
+let blockedUntil = null;
+let isAdminLogged = false;
+
+// ═══════════════════════════════════════════════════════════════
+// INICIALIZACIÓN
+// ═══════════════════════════════════════════════════════════════
+
+function loadStoredData() {
+  try {
+    const storedCodes = localStorage.getItem('bl_secure_codes_2026');
+    if (storedCodes) secureCodes = new Map(Object.entries(JSON.parse(storedCodes)));
+    
+    const storedVotes = localStorage.getItem('bl_secure_votes_2026');
+    if (storedVotes) votes = JSON.parse(storedVotes);
+    
+    const blocked = localStorage.getItem('bl_blocked_until');
+    if (blocked) {
+      blockedUntil = parseInt(blocked);
+      if (Date.now() < blockedUntil) attempts = 0;
+      else localStorage.removeItem('bl_blocked_until');
+    }
+  } catch(e) { console.error('Error loading:', e); }
+}
+
+function saveData() {
+  try {
+    localStorage.setItem('bl_secure_codes_2026', JSON.stringify(Object.fromEntries(secureCodes)));
+    localStorage.setItem('bl_secure_votes_2026', JSON.stringify(votes));
+  } catch(e) { console.error('Error saving:', e); }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SPLASH & NAVEGACIÓN
+// ═══════════════════════════════════════════════════════════════
+
+function enterSite() {
+  document.getElementById('splash').classList.add('out');
+  setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+    renderCards();
+    renderRanking();
+    updateAttemptsDisplay();
+  }, 850);
+}
+
+function scrollToSection(id) {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// RENDERIZADO
+// ═══════════════════════════════════════════════════════════════
+
+function renderCards() {
+  const grid = document.getElementById('cards-grid');
+  if (!grid) return;
+  
+  grid.innerHTML = '';
+  Object.entries(RESTAURANTS).forEach(([id, data], index) => {
+    const restaurantVotes = votes.filter(v => v.restaurantId === parseInt(id));
+    const avg = restaurantVotes.length ? 
+      restaurantVotes.reduce((a,b) => a + b.rating, 0) / restaurantVotes.length : 0;
+    
+    const stars = [1,2,3,4,5].map(s => 
+      `<span class="pcs${s <= Math.round(avg) ? '' : ' off'}">★</span>`
+    ).join('');
+    
+    const card = document.createElement('div');
+    card.className = 'pcard';
+    card.innerHTML = `
+      <div class="pcard-img-wrap">
+        <img src="${data.img}" alt="${data.burger}" onerror="this.src='https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&q=85'">
+        <div class="pcard-img-fade"></div>
+        <div class="pcard-num">#${String(index + 1).padStart(2,'0')}</div>
+      </div>
+      <div class="pcard-body">
+        <p class="pcard-rest">${data.name}</p>
+        <h3 class="pcard-name">${data.burger}</h3>
+        <div class="pcard-ings">
+          ${data.ingredients.map(i => `<span class="pcard-ing">${i}</span>`).join('')}
+        </div>
+        <div class="pcard-stars">
+          ${stars}
+          <span class="pcard-avg">
+            ${restaurantVotes.length ? `${avg.toFixed(1)} / 5.0 · ${restaurantVotes.length} votos` : 'Sin votos aún'}
+          </span>
+        </div>
+        <button class="btn-vote" onclick="openVoteModal(${id})">🗳 VOTAR POR ESTA BURGER</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderRanking() {
+  const list = document.getElementById('rank-list');
+  if (!list) return;
+  
+  const ranking = {};
+  Object.keys(RESTAURANTS).forEach(id => {
+    const restaurantVotes = votes.filter(v => v.restaurantId === parseInt(id));
+    ranking[id] = {
+      votes: restaurantVotes,
+      avg: restaurantVotes.length ? 
+        restaurantVotes.reduce((a,b) => a + b.rating, 0) / restaurantVotes.length : 0,
+      count: restaurantVotes.length
+    };
+  });
+  
+  const sorted = Object.entries(ranking)
+    .sort((a,b) => b[1].avg - a[1].avg || b[1].count - a[1].count);
+  
+  const medals = ['gold-medal', 'silver-medal', 'bronze-medal'];
+  
+  list.innerHTML = sorted.map(([id, data], i) => {
+    const stars = [1,2,3,4,5].map(s => 
+      `<span class="rstar${s <= Math.round(data.avg) ? '' : ' off'}">★</span>`
+    ).join('');
+    
+    return `
+      <div class="rank-row">
+        <div class="rank-pos ${medals[i] || ''}">
+          ${i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+        </div>
+        <div class="rank-info">
+          <p class="rank-rest">${RESTAURANTS[id].name}</p>
+          <p class="rank-burger">${RESTAURANTS[id].burger}</p>
+          <div class="rank-stars-row">${stars}</div>
+        </div>
+        <div>
+          <div class="rank-score">${data.count ? data.avg.toFixed(1) : '—'}</div>
+          <div class="rank-votes">${data.count} voto${data.count !== 1 ? 's' : ''}</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+  
+  const totalVotesEl = document.getElementById('total-votes-admin');
+  const totalCodesEl = document.getElementById('total-codes-admin');
+  const usedCodesEl = document.getElementById('used-codes-admin');
+  
+  if (totalVotesEl) totalVotesEl.textContent = votes.length;
+  if (totalCodesEl) totalCodesEl.textContent = secureCodes.size;
+  if (usedCodesEl) {
+    usedCodesEl.textContent = Array.from(secureCodes.values()).filter(c => c.used).length;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODALES
+// ═══════════════════════════════════════════════════════════════
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function openVoteModal(restaurantId) {
+  if (checkBlocked()) return;
+  
+  currentTarget = restaurantId;
+  currentRating = 0;
+  
+  document.getElementById('v-name').value = '';
+  document.getElementById('v-code').value = '';
+  document.getElementById('v-comment').value = '';
+  document.getElementById('code-status').textContent = '';
+  document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  document.getElementById('rating-label').textContent = 'Selecciona de 1 a 5 estrellas';
+  
+  if (restaurantId) {
+    const data = RESTAURANTS[restaurantId];
+    document.getElementById('m-rest').textContent = data.name;
+    document.getElementById('m-name').textContent = data.burger;
+  } else {
+    document.getElementById('m-rest').textContent = '¿A cuál restaurante?';
+    document.getElementById('m-name').textContent = 'Ingresa tu código de ticket';
+  }
+  
+  openModal('vote-modal');
+}
+
+function openAdminPanel() {
+  const password = prompt('🔐 Ingresa la contraseña de administrador:');
+  if (password === CONFIG.ADMIN_PASSWORD) {
+    isAdminLogged = true;
+    document.getElementById('admin-section').style.display = 'block';
+    renderRanking();
+    scrollToSection('admin-section');
+    showToast('✅ Acceso concedido. Bienvenido Administrador');
+  } else if (password !== null) {
+    showToast('❌ Contraseña incorrecta');
+  }
+}
+
+function closeAdminPanel() {
+  document.getElementById('admin-section').style.display = 'none';
+  isAdminLogged = false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SISTEMA DE VOTACIÓN SEGURA
+// ═══════════════════════════════════════════════════════════════
+
+function generateSecureCode(restaurantId) {
+  const random1 = Math.random().toString(36).substring(2, 6).toUpperCase();
+  const random2 = Math.random().toString(36).substring(2, 6).toUpperCase();
+  return `BL-${random1}-${random2}`;
+}
+
+function generateSecureCodes() {
+  if (!isAdminLogged) {
+    showToast('❌ Acceso denegado');
+    return;
+  }
+  
+  const restaurantId = parseInt(document.getElementById('admin-restaurant').value);
+  const quantity = parseInt(document.getElementById('admin-quantity').value);
+  const restaurantName = RESTAURANTS[restaurantId].name;
+  
+  const newCodes = [];
+  for (let i = 0; i < quantity; i++) {
+    let code;
+    do { code = generateSecureCode(restaurantId); } 
+    while (secureCodes.has(code));
+    
+    secureCodes.set(code, {
+      restaurantId: restaurantId,
+      used: false,
+      createdAt: new Date().toISOString()
+    });
+    newCodes.push(code);
+  }
+  
+  saveData();
+  
+  const display = document.getElementById('generated-codes-display');
+  display.innerHTML = `
+    <p style="color:#2ecc71;">✅ ${quantity} códigos generados para ${restaurantName}</p>
+    <div class="secure-code-list">
+      ${newCodes.map(c => `<span class="secure-code-item">${c}</span>`).join('')}
+    </div>
+    <p style="color:#e67e22;font-size:.75rem;">⚠️ Guarda estos códigos - NO podrán recuperarse</p>
+  `;
+  
+  renderRanking();
+  showToast(`✅ ${quantity} códigos generados`);
+}
+
+function exportCodesToCSV() {
+  if (!isAdminLogged) {
+    showToast('❌ Acceso denegado');
+    return;
+  }
+  
+  let csv = 'Código,Restaurante,Usado,Fecha Creación\n';
+  secureCodes.forEach((value, code) => {
+    csv += `${code},${RESTAURANTS[value.restaurantId].name},${value.used ? 'SÍ' : 'NO'},${value.createdAt}\n`;
+  });
+  
+  downloadFile(csv, `burger-land-codes-${Date.now()}.csv`, 'text/csv');
+  showToast('📥 Códigos exportados a CSV');
+}
+
+function exportVotesToCSV() {
+  if (!isAdminLogged) {
+    showToast('❌ Acceso denegado');
+    return;
+  }
+  
+  let csv = 'Fecha,Votante,Restaurante,Calificación,Comentario,Código\n';
+  votes.forEach(v => {
+    csv += `${v.timestamp},${v.voterName},${v.restaurantName},${v.rating},"${v.comment || ''}",${v.code}\n`;
+  });
+  
+  downloadFile(csv, `burger-land-votos-${Date.now()}.csv`, 'text/csv');
+  showToast('📊 Votos exportados a CSV');
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob(['\uFEFF' + content], {type: `${type};charset=utf-8`});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function setRating(stars) {
+  currentRating = stars;
+  document.querySelectorAll('.sbtn').forEach((btn, i) => {
+    btn.classList.toggle('on', i < stars);
+  });
+  
+  const labels = ['Selecciona', '😣 Malísima', '😐 Regular', '😊 Buena', '😍 Muy Buena', '🤩 ¡Perfecta!'];
+  document.getElementById('rating-label').textContent = labels[stars] || 'Selecciona de 1 a 5 estrellas';
+}
+
+function checkBlocked() {
+  if (blockedUntil && Date.now() < blockedUntil) {
+    const minutesLeft = Math.ceil((blockedUntil - Date.now()) / 60000);
+    showToast(`⛔ Sistema bloqueado. Intenta en ${minutesLeft} minutos`);
+    return true;
+  }
+  return false;
+}
+
+function reduceAttempts() {
+  attempts--;
+  updateAttemptsDisplay();
+  
+  if (attempts <= 0) {
+    blockedUntil = Date.now() + CONFIG.BLOCK_DURATION;
+    localStorage.setItem('bl_blocked_until', blockedUntil);
+    document.getElementById('submit-vote-btn').disabled = true;
+    showToast('⛔ Demasiados intentos. Bloqueado por 5 minutos');
+    setTimeout(() => {
+      document.getElementById('submit-vote-btn').disabled = false;
+    }, CONFIG.BLOCK_DURATION);
+  }
+}
+
+function updateAttemptsDisplay() {
+  const display = document.getElementById('attempts-left');
+  if (display) display.textContent = attempts;
+}
+
+function submitSecureVote() {
+  if (checkBlocked()) return;
+  
+  const name = document.getElementById('v-name').value.trim();
+  const code = document.getElementById('v-code').value.trim().toUpperCase();
+  const comment = document.getElementById('v-comment').value.trim();
+  
+  if (!name) {
+    showToast('❌ Ingresa tu nombre');
+    reduceAttempts();
+    return;
+  }
+  
+  if (!code) {
+    showToast('❌ Ingresa el código de votación');
+    reduceAttempts();
+    return;
+  }
+  
+  const codePattern = /^BL-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+  if (!codePattern.test(code)) {
+    showToast('❌ Formato inválido. Debe ser: BL-XXXX-XXXX');
+    reduceAttempts();
+    return;
+  }
+  
+  if (currentRating === 0) {
+    showToast('❌ Selecciona una calificación');
+    reduceAttempts();
+    return;
+  }
+  
+  if (!secureCodes.has(code)) {
+    showToast('❌ Código no válido');
+    document.getElementById('code-status').innerHTML = '<span style="color:#e74c3c;">✕ Código no reconocido</span>';
+    reduceAttempts();
+    return;
+  }
+  
+  const codeData = secureCodes.get(code);
+  
+  if (codeData.used) {
+    showToast('❌ Este código ya fue utilizado');
+    document.getElementById('code-status').innerHTML = '<span style="color:#e67e22;">⚠ Código ya usado</span>';
+    reduceAttempts();
+    return;
+  }
+  
+  let finalTarget = currentTarget || codeData.restaurantId;
+  
+  const vote = {
+    id: Date.now() + Math.random().toString(36),
+    voterName: name,
+    restaurantId: finalTarget,
+    restaurantName: RESTAURANTS[finalTarget].name,
+    rating: currentRating,
+    comment: comment,
+    code: code,
+    timestamp: new Date().toISOString()
+  };
+  
+  votes.push(vote);
+  codeData.used = true;
+  codeData.usedAt = new Date().toISOString();
+  secureCodes.set(code, codeData);
+  
+  saveData();
+  
+  attempts = CONFIG.MAX_ATTEMPTS;
+  updateAttemptsDisplay();
+  
+  closeModal('vote-modal');
+  renderCards();
+  renderRanking();
+  
+  document.getElementById('success-message').innerHTML = `
+    <strong style="color:var(--gold3)">${name}</strong>, tu voto de 
+    <strong style="color:var(--gold2)">${currentRating} ⭐</strong> para 
+    <strong style="color:var(--gold3)">${RESTAURANTS[finalTarget].name}</strong> 
+    ha sido registrado.<br><br>¡Gracias por participar en Burger Land 2026!
+  `;
+  openModal('success-overlay');
+  
+  showToast(`🎉 ¡Voto registrado! Gracias ${name}`);
+  
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.textContent = ['🎉','🏆','⭐','🍔','🔥'][Math.floor(Math.random()*5)];
+      confetti.style.position = 'fixed';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.top = '-20px';
+      confetti.style.fontSize = '30px';
+      confetti.style.animation = 'fall 3s linear';
+      confetti.style.zIndex = '9999';
+      confetti.style.pointerEvents = 'none';
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }, i * 50);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════════════════
+
+let toastTimeout;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  if (toastTimeout) clearTimeout(toastTimeout);
+  t.textContent = msg;
+  t.classList.add('show');
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// INICIAR
+// ═══════════════════════════════════════════════════════════════
+
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+`;
+document.head.appendChild(style);
+
+loadStoredData();
+updateAttemptsDisplay();
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.overlay').forEach(m => m.classList.remove('open'));
+  }
+});
+
+document.querySelectorAll('.overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+console.log('🔥 Burger Land 2026 - Sistema de Votación Segura');
+console.log('👨‍💻 Creado por: Milkys Alvarez & Luis Gamez');
+console.log('📍 San Juan del Cesar · La Guajira · Colombia');
+console.log('📸 Todas las imágenes son de HAMBURGUESAS REALES');
+</script>
+
+</body>
+</html>
